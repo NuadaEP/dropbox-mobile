@@ -1,7 +1,8 @@
-import axios from 'axios';
+import axios from "axios";
+import { BASE_URL as baseURL } from "react-native-dotenv";
 
 const api = axios.create({
-    baseURL: 'https://oministack-backend.herokuapp.com',
+  baseURL,
 });
 
 export default api;
