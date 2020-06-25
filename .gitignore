@@ -57,3 +57,5 @@ buck-out/
 
 #env
 .env
+
+yarn.lock
