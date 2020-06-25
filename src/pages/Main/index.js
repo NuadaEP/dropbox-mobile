@@ -41,7 +41,6 @@ export default class Main extends Component {
 
       this.props.navigation.navigate("Box");
     } catch (error) {
-      console.log(error);
       this.setState({ loading: false });
     }
   };

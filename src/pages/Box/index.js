@@ -22,7 +22,7 @@ export default class Box extends Component {
 
   async componentDidMount() {
     const box = await AsyncStorage.getItem("@RocketBox: box");
-    console.log(box);
+
     this.subscribeToNewFiles(box);
 
     const response = await api.get(`boxes/${box}`);
@@ -53,7 +53,7 @@ export default class Box extends Component {
 
       await FileViewer.open(filePath);
     } catch (error) {
-      console.log("Error to open a file");
+      return "Error to open a file";
     }
   };
 
@@ -72,25 +72,23 @@ export default class Box extends Component {
 
   handleUpload = () => {
     ImagePicker.launchImageLibrary({}, async (upload) => {
-      if (upload.error) {
-        console.log("Image picker error");
-      } else if (upload.didCancel) {
-        console.log("Canceled by user");
-      } else {
-        const data = new FormData();
+      if (upload.error) return "Image picker error";
 
-        const [prefix, suffix] = upload.fileName.split(".");
+      if (upload.didCancel) return "Canceled by user";
 
-        const ext = suffix.toLowerCase() == "heic" ? "jpg" : suffix;
+      const data = new FormData();
 
-        data.append("file", {
-          uri: upload.uri,
-          type: upload.type,
-          name: `${prefix}.${ext}`,
-        });
+      const [prefix, suffix] = upload.fileName.split(".");
 
-        api.post(`boxes/${this.state.box._id}/files`, data);
-      }
+      const ext = suffix.toLowerCase() == "heic" ? "jpg" : suffix;
+
+      data.append("file", {
+        uri: upload.uri,
+        type: upload.type,
+        name: `${prefix}.${ext}`,
+      });
+
+      api.post(`boxes/${this.state.box._id}/files`, data);
     });
   };
 
